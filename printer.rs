@@ -6,7 +6,7 @@ use std::env;
 use winapi::um::winspool;
 use std::ffi::CString;
 use std::ptr;
-use crate::db::{DbState, PrinterSettings, DailySalesReport, Error};
+use crate::db::{DbState, PrinterSettings, Error};
 use chrono::{Local, Utc};
 use rusqlite::{params, Connection};
 use serde::{Deserialize, Serialize};
@@ -197,6 +197,7 @@ fn validate_printer_settings(settings: &PrinterSettings) -> Vec<String> {
 }
 
 async fn attempt_usb_print(content: &str, settings: &PrinterSettings) -> Result<(), String> {
+    // Anyhow print to usb connected printer 
     // Try Windows RAW printing first
     match try_raw_usb_print(content, settings).await {
         Ok(_) => return Ok(()),
